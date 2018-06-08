@@ -381,8 +381,6 @@ class Globe extends React.Component {
 
     let currentRanges = this.ranges;
 
-    console.log('RANGES', ranges);
-
     this.ranges = [].concat(ranges).map(r => {
       if (typeof r.center === 'string') r.center = findCountry(r.center).properties.center;
 

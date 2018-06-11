@@ -517,10 +517,19 @@ class Globe extends React.Component {
 
     // Draw a thicker outline around the globe to hide any circle edges
     c.beginPath();
-    c.strokeStyle = '#377f8c';
-    c.lineWidth = 4;
+    c.strokeStyle = '#f9f9f9';
+    c.lineWidth = 12;
     this.path(this.globe);
     c.stroke();
+
+    // Draw the nice thin actual outline of the globe
+    c.beginPath();
+    c.strokeStyle = "#B6CED6";
+    c.lineWidth = 2;
+    this.projection.scale(this.projection.scale() - 5);
+    this.path(this.globe);
+    c.stroke();
+    this.projection.scale(this.projection.scale() + 5);
 
     // Draw a little plane somewhere
     if (this.plane) {

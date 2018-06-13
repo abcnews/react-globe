@@ -36,6 +36,19 @@ function getMargin(width, height) {
   return Math.floor(Math.min(width, height) * percentage);
 }
 
+function interpolateScale(fromScale, toScale, bounce) {
+  return t => {
+    let factor = 1 - 4 * t * t + 4 * t - 1;
+    let result = fromScale + t * (toScale - fromScale);
+
+    if (bounce) {
+      result -= factor * Math.min(toScale, fromScale) * 0.5;
+    }
+
+    return result;
+  };
+}
+
 class Globe extends React.Component {
   constructor(props) {
     super(props);
@@ -124,12 +137,22 @@ class Globe extends React.Component {
   componentWillReceiveProps(nextProps) {
     const duration = nextProps.config.duration || this.props.config.duration || 1000;
 
+    let zoomBounce = false;
+
     if (nextProps.config.center !== this.props.config.center && nextProps.config.center) {
+      if (this.props.config.center) {
+        let difference = [
+          nextProps.config.center[0] - this.props.config.center[0],
+          nextProps.config.center[1] - this.props.config.center[1]
+        ];
+        zoomBounce = Math.sqrt(difference[0] * difference[0] + difference[1] * difference[1]) > 60;
+      }
+
       this.setPosition(nextProps.config.center, duration);
     }
 
-    if (nextProps.config.scale !== this.props.config.scale && nextProps.config.scale) {
-      this.setScale(nextProps.config.scale, duration);
+    if (nextProps.config.scale) {
+      this.setScale(nextProps.config.scale, duration, zoomBounce);
     }
 
     if (nextProps.config.labels !== this.props.config.labels) {
@@ -202,9 +225,10 @@ class Globe extends React.Component {
    * Animate a change in scale for the globe
    * @param {number} scale Percentage of initial scale
    * @param {number} duration A time in milliseconds
+   * @param {bool} bounce Should the camera zoom out further than needed in the zoom tween arc
    * @param {function} onComplete A function to run when the tween has finished
    */
-  setScale(scale, duration, onComplete) {
+  setScale(scale, duration, bounce, onComplete) {
     if (typeof duration === 'undefined') duration = 1000;
 
     this.scale = scale;
@@ -215,7 +239,7 @@ class Globe extends React.Component {
       .duration(duration)
       .tween('zoom', () => {
         const scale0 = this.projection.scale();
-        const lerp = d3.interpolate(scale0, scale);
+        const lerp = interpolateScale(scale0, scale, bounce);
         return t => {
           this.projection.scale(lerp(t));
           this.draw();

@@ -464,13 +464,6 @@ class Globe extends React.Component {
       c.fill();
     });
 
-    // Draw a thicker outline around the globe to hide any circle edges
-    c.beginPath();
-    c.strokeStyle = '#111';
-    c.lineWidth = 4;
-    this.path(this.globe);
-    c.stroke();
-
     // Draw any shapes
     (props.config.shapes || []).forEach(shape => {
       shape.features.forEach(feature => {
@@ -515,12 +508,19 @@ class Globe extends React.Component {
       c.strokeStyle = '#FF6100';
       c.globalAlpha = 0.1;
       c.fillStyle = '#FF4D00';
-      c.lineWidth = 1.1;
+      c.lineWidth = 3;
       this.path(range());
       c.fill();
       c.globalAlpha = 1;
       c.stroke();
     });
+
+    // Draw a thicker outline around the globe to hide any circle edges
+    c.beginPath();
+    c.strokeStyle = '#377f8c';
+    c.lineWidth = 4;
+    this.path(this.globe);
+    c.stroke();
 
     // Draw a little plane somewhere
     if (this.plane) {

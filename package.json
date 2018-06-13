@@ -2,6 +2,14 @@
   "name": "@abcnews/react-globe",
   "version": "1.0.4",
   "description": "A configurable 3D globe for React",
+  "homepage": "https://github.com/abcnews/react-globe#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abcnews/react-globe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abcnews/react-globe/issues"
+  },
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",

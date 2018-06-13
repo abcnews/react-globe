@@ -1,6 +1,6 @@
 {
   "name": "@abcnews/react-globe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A configurable 3D globe for React",
   "main": "lib/index.js",
   "scripts": {

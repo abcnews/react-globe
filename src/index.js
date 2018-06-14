@@ -451,12 +451,8 @@ class Globe extends React.Component {
 
     const c = this.context.canvas ? this.context : this.canvas.node().getContext('2d');
 
-    if (props.background) {
-      c.fillStyle = props.background;
-      c.fillRect(0, 0, this.width, this.height);
-    } else {
-      c.clearRect(0, 0, this.width, this.height);
-    }
+    c.fillStyle = props.background;
+    c.fillRect(0, 0, this.width, this.height);
 
     // Draw the oceans
     c.beginPath();
@@ -541,10 +537,19 @@ class Globe extends React.Component {
 
     // Draw a thicker outline around the globe to hide any circle edges
     c.beginPath();
-    c.strokeStyle = '#377f8c';
-    c.lineWidth = 4;
+    c.strokeStyle = props.background;
+    c.lineWidth = 12;
     this.path(this.globe);
     c.stroke();
+
+    // Draw the nice thin actual outline of the globe
+    c.beginPath();
+    c.strokeStyle = '#B6CED6';
+    c.lineWidth = 2;
+    this.projection.scale(this.projection.scale() - 5);
+    this.path(this.globe);
+    c.stroke();
+    this.projection.scale(this.projection.scale() + 5);
 
     // Draw a little plane somewhere
     if (this.plane) {
@@ -671,6 +676,7 @@ class Globe extends React.Component {
 }
 
 Globe.defaultProps = {
+  background: '#f9f9f9',
   config: {}
 };
 

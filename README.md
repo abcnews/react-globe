@@ -22,3 +22,4 @@ module.exports = App;
 ## Authors
 
 - [Nathan Hoad](mailto:hoad.nathan@abc.net.au)
+- [Joshua Byrd](mailto:byrd.joshua@abc.net.au)
